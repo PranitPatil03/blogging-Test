@@ -9,15 +9,12 @@ import { userAuth, createUserAsync, setUserAuth } from "../userSlice.js";
 import { Toaster, toast } from "react-hot-toast";
 
 const UserAuthFormPage = ({ type }) => {
-
   const dispatch = useDispatch();
+  
+  const userAuthData = useSelector(userAuth);
 
-  const userToken = useSelector(userAuth);
-  const userSetUserAuth = useSelector(setUserAuth);
-
-  console.log(userToken);
-  console.log(userSetUserAuth);
-
+  const { accessToken, fullName, profile_img, userName } = userAuthData || {};
+  
   let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
 
@@ -58,8 +55,8 @@ const UserAuthFormPage = ({ type }) => {
 
     dispatch(
       createUserAsync({
-        serverRoute:serverRoute,
-        formData:formData,
+        serverRoute: serverRoute,
+        formData: formData,
       })
     );
     console.log("Inside Handle Submit");

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { useState } from "react";
 import logo from "../../assets/logo.png";
 import { Link, Outlet } from "react-router-dom";
@@ -7,7 +8,9 @@ import { userAuth } from "../auth/userSlice";
 const Navbar = () => {
   const [SearchBoxVisibility, setSearchBoxVisibility] = useState(false);
 
-  const userData = useSelector(userAuth);
+  const userAuthData = useSelector(userAuth);
+
+  const { accessToken, fullName, profile_img, userName } = userAuthData || {};
 
   return (
     <>
@@ -43,34 +46,38 @@ const Navbar = () => {
             <p className="">Write</p>
           </Link>
 
-          <>
-            <Link to="/dashboard/notification">
-              <button className="w-12 h-12 rounded-full relative bg-grey hover:bg-black/10">
-                <i className="fi fi-rr-bell text-2xl block mt-1"></i>
-              </button>
-            </Link>
+          {accessToken ? (
+            <>
+              <Link to="/dashboard/notification">
+                <button className="w-12 h-12 rounded-full relative bg-grey hover:bg-black/10">
+                  <i className="fi fi-rr-bell text-2xl block mt-1"></i>
+                </button>
+              </Link>
 
-            <div
-              className="relative"
-              // onClick={handleUserNavPanel}
-              // onBlur={handleBlur}
-            >
-              <button className="w-12 h-12 mt-1">
-                <img
-                  // src={}
-                  className="w-full h-full object-cover rounded-full"
-                />
-              </button>
-            </div>
-          </>
+              <div
+                className="relative"
+                // onClick={handleUserNavPanel}
+                // onBlur={handleBlur}
+              >
+                <button className="w-12 h-12 mt-1">
+                  <img
+                    src={profile_img}
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <Link to="/sign-in" className="btn-dark py-2">
+                Sign In
+              </Link>
 
-          <Link to="/sign-in" className="btn-dark py-2">
-            Sign In
-          </Link>
-
-          <Link to="/signup" className="btn-light py-2 hidden md:block">
-            Sign Up
-          </Link>
+              <Link to="/signup" className="btn-light py-2 hidden md:block">
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       </nav>
 

@@ -2,17 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createUser } from "./userAPI.js";
 
 const initialState = {
-  // userAuth: {
-  //   accessToken: "",
-  //   userName: "",
-  //   fullName: "",
-  //   profile_img: "",
-  // },
-  accessToken: "",
-  userName: "",
-  fullName: "",
-  profile_img: "",
-  setUserAuth: null,
+  userAuth: {
+    accessToken: "",
+    userName: "",
+    fullName: "",
+    profile_img: "",
+  },
+  setUserAuth: {},
   status: "idle",
 };
 
@@ -31,10 +27,15 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setUserAuth: (state, action) => {
-      state.accessToken = action.payload;
+      state.userAuth = action.payload; 
     },
     clearUserAuth: (state) => {
-      state.accessToken = null;
+      state.userAuth = {
+        accessToken: "",
+        userName: "",
+        fullName: "",
+        profile_img: "",
+      };
     },
   },
   extraReducers: (builder) => {
@@ -44,11 +45,11 @@ export const authSlice = createSlice({
       })
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.user = action.payload;
+        state.userAuth = action.payload.User;
       });
   },
 });
 
-export const userAuth = (state) => state.auth.user;
+export const userAuth = (state) => state.auth.userAuth;
 export const setUserAuth = (state) => state.auth.setUserAuth;
 export default authSlice.reducer;

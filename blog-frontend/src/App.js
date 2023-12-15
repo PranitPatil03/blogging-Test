@@ -1,7 +1,10 @@
+import { useEffect } from "react";
 import "./App.css";
 import UserAuthFormPage from "./features/auth/components/UserAuthFormPage.js";
 import Navbar from "./features/navbar/Navbar.js"
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { setUserAuth } from "./features/auth/userSlice.js";
+import { LookInSession } from "./common/Session.js";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +23,18 @@ const router = createBrowserRouter([
   },
 ]);
 
+
+
 function App() {
+
+  useEffect(() => {
+    const userInSession = LookInSession("user");
+
+    userInSession
+      ? setUserAuth(JSON.parse(userInSession))
+      : setUserAuth({ accessToken: null });
+  }, []);
+
   return (
     <>
       <div className="App">

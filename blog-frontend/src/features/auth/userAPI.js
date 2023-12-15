@@ -1,7 +1,6 @@
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { StoreSession } from "../../common/Session";
 import { setUserAuth } from "./userSlice";
-
 export async function createUser(userData) {
   try {
     const response = await fetch(
@@ -14,11 +13,10 @@ export async function createUser(userData) {
     );
 
     const data = await response.json();
-    console.log("Inside createUser ");
-    console.log(data);
+    StoreSession("user", JSON.stringify(data));
+    setUserAuth(data);
     return { data };
   } catch (error) {
-    console.log(error)
     toast.error(error?.response?.data?.error || "An error occurred");
   }
 }

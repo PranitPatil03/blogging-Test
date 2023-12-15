@@ -1,6 +1,6 @@
 import "./App.css";
 import UserAuthFormPage from "./features/auth/components/UserAuthFormPage.js";
-import Navbar from "./features/navbar/Navbar.js";
+import Navbar from "./features/navbar/Navbar.js"
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([

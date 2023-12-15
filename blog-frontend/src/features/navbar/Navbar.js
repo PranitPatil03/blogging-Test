@@ -1,9 +1,13 @@
 import { useState } from "react";
-import logo from "../../assets/logo.png"
+import logo from "../../assets/logo.png";
 import { Link, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { userAuth } from "../auth/userSlice";
 
 const Navbar = () => {
   const [SearchBoxVisibility, setSearchBoxVisibility] = useState(false);
+
+  const userData = useSelector(userAuth);
 
   return (
     <>
@@ -38,6 +42,27 @@ const Navbar = () => {
             <i className="fi fi-rr-edit"></i>
             <p className="">Write</p>
           </Link>
+
+          <>
+            <Link to="/dashboard/notification">
+              <button className="w-12 h-12 rounded-full relative bg-grey hover:bg-black/10">
+                <i className="fi fi-rr-bell text-2xl block mt-1"></i>
+              </button>
+            </Link>
+
+            <div
+              className="relative"
+              // onClick={handleUserNavPanel}
+              // onBlur={handleBlur}
+            >
+              <button className="w-12 h-12 mt-1">
+                <img
+                  // src={}
+                  className="w-full h-full object-cover rounded-full"
+                />
+              </button>
+            </div>
+          </>
 
           <Link to="/sign-in" className="btn-dark py-2">
             Sign In

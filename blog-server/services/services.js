@@ -2,6 +2,13 @@
 import jwt from "jsonwebtoken";
 import { nanoid } from "nanoid";
 import User from "../model/User.js";
+import aws from "aws-sdk";
+
+export const s3 = new aws.S3({
+  region: "ap-south-1",
+  accessKeyId: process.env.AWS_SECRET_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+});
 
 export const generateUploadURL = async () => {
   const date = new Date();

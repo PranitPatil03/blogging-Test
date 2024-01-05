@@ -1,20 +1,22 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import InputBox from "../../../components/InputBox";
 import googleIcon from "../../../assets/google.png";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import PageAnimation from "../../../common/PageAnimation.js";
 import { useSelector, useDispatch } from "react-redux";
-import { userAuth, createUserAsync, setUserAuth } from "../userSlice.js";
+import { createUserAsync, loginUserAsync, selectUserAuth } from "../userSlice.js";
 import { Toaster, toast } from "react-hot-toast";
+import { authWithGoogle } from "../../../common/Firebase.js";
 
 const UserAuthFormPage = ({ type }) => {
   const dispatch = useDispatch();
-  
-  const userAuthData = useSelector(userAuth);
+
+  const userAuthData = useSelector(selectUserAuth);
 
   const { accessToken, fullName, profile_img, userName } = userAuthData || {};
-  
+
   let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
 
@@ -59,10 +61,39 @@ const UserAuthFormPage = ({ type }) => {
         formData: formData,
       })
     );
-    console.log("Inside Handle Submit");
   };
 
-  return (
+  const handleGoogleAuth = (e) => {
+    e.preventDefault();
+
+    authWithGoogle()
+      .then((user) => {
+        console.log(user.accessToken.length);
+
+        const serverRoute = "/google-auth";
+
+        const formData = {
+          accessToken: user.accessToken,
+        };
+
+        console.log(formData.accessToken.length);
+
+        // dispatch(
+        //   loginUserAsync({
+        //     serverRoute: serverRoute,
+        //     formData: formData,
+        //   })
+        // );
+      })
+      .catch((err) => {
+        toast.error("Something went wrong , Try Again");
+        return console.log(err);
+      });
+  };
+
+  return accessToken ? (
+    <Navigate to="/" />
+  ) : (
     <div>
       <PageAnimation key={type}>
         <section className="h-cover flex items-center justify-center">
@@ -112,7 +143,12 @@ const UserAuthFormPage = ({ type }) => {
             </div>
 
             <button className="btn-dark flex items-center justify-center gap-4 w-[90%] center">
-              <img src={googleIcon} className="w-5" /> continue with Google
+              <img
+                src={googleIcon}
+                className="w-5"
+                onClick={handleGoogleAuth}
+              />{" "}
+              continue with Google
             </button>
 
             {type === "sign-in" ? (

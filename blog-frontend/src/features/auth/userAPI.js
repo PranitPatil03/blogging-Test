@@ -13,7 +13,7 @@ export async function createUser(userData) {
     );
 
     const data = await response.json();
-    StoreSession("user", JSON.stringify(data));
+    StoreSession("user", JSON.stringify(data.User));
     setUserAuth(data);
     return { data };
   } catch (error) {

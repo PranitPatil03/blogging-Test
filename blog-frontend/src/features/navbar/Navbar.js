@@ -3,12 +3,12 @@ import { useState } from "react";
 import logo from "../../assets/logo.png";
 import { Link, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { userAuth } from "../auth/userSlice";
+import { selectUserAuth } from "../auth/userSlice";
 
 const Navbar = () => {
   const [SearchBoxVisibility, setSearchBoxVisibility] = useState(false);
 
-  const userAuthData = useSelector(userAuth);
+  const userAuthData = useSelector(selectUserAuth);
 
   const { accessToken, fullName, profile_img, userName } = userAuthData || {};
 
